@@ -1,0 +1,30 @@
+# Dependencias
+node_modules/
+
+# Builds
+dist/
+build/
+out/
+
+# Variables de entorno
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+
+# Backups
+backups/
+*.dump
+*.archive
+
+# Estado local de Spec Kit
+.specify/feature.json
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
