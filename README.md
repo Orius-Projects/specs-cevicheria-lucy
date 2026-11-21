@@ -45,6 +45,7 @@ specs-cevicheria-lucy/
 │   ├── memory/constitution.md
 │   └── templates/
 ├── docs/
+│   ├── design-system.md                # paleta, componentes y reglas responsive
 │   └── sources/
 │       └── DOCUMENTO_PROCESOS_CEVICHERIA_LUCY.pdf
 └── specs/
@@ -55,8 +56,13 @@ specs-cevicheria-lucy/
     ├── 004-cocina-pendientes/
     ├── 005-avisos-tiempo-real/
     ├── 006-cierre-turno/
-    └── 007-despliegue-web-responsive/
+    ├── 007-despliegue-web-responsive/
+    └── 008-gestion-platos-raciones/
 ```
+
+### 2.1 Diseño de interfaz
+
+Las decisiones de paleta celeste, componentes, comportamiento responsive y accesibilidad están en **[docs/design-system.md](docs/design-system.md)**. Es la referencia obligatoria para cualquier cambio de UI y complementa los criterios de la spec 007.
 
 ---
 
@@ -71,6 +77,7 @@ specs-cevicheria-lucy/
 | 005 | [Avisos en tiempo real](specs/005-avisos-tiempo-real/spec.md) | P-04, P-05 | P1 | Borrador |
 | 006 | [Cierre de turno](specs/006-cierre-turno/spec.md) | P-06 | P1 | Borrador |
 | 007 | [Despliegue web responsive](specs/007-despliegue-web-responsive/spec.md) | Web | P1 | Borrador |
+| 008 | [Gestión de platos y raciones](specs/008-gestion-platos-raciones/spec.md) | P-01, P-05 | P1 | Implementada (demo) |
 
 ---
 
@@ -152,7 +159,8 @@ Con 5 o menos raciones se muestra “Últimas raciones”; al llegar a 0, “Ago
 2. Revisar `specs/README.md` para estado, dependencias y trazabilidad.
 3. Validar `specs/001-plataforma-base/spec.md`, `specs/001-plataforma-base/data-model.md` y `specs/001-plataforma-base/contracts/rest-api.md`.
 4. Responder las preguntas abiertas de cada spec.
-5. Implementar por fases: `001` → `002` → `003`/`004` → `005` → `006` → `007`.
+5. Implementar por fases: `001` → `002` → `003`/`004` → `005` → `006` → `007` → `008`.
+6. Revisar la spec `008` para la experiencia del encargado, el catálogo semilla y el flujo de raciones.
 
 ### Próximo paso recomendado
 

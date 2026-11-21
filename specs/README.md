@@ -13,6 +13,7 @@ Este directorio agrupa las specs por feature, siguiendo SDD. La fuente es `docs/
 | 005 | [Avisos en tiempo real](005-avisos-tiempo-real/spec.md) | P-04, P-05 | P1 | ✅ | ✅ | ✅ | ✅ | `research.md`, `quickstart.md`, `contracts/events.md` |
 | 006 | [Cierre de turno](006-cierre-turno/spec.md) | P-06 | P1 | ✅ | ✅ | ✅ | ✅ | `research.md`, `quickstart.md` |
 | 007 | [Despliegue web responsive](007-despliegue-web-responsive/spec.md) | Web | P1 | ✅ | ✅ | ✅ | ✅ | `research.md`, `quickstart.md` |
+| 008 | [Gestión de platos y raciones](008-gestion-platos-raciones/spec.md) | P-01, P-05 | P1 | ✅ | — | — | — | Catálogo semilla, nueva IA del encargado |
 
 ## 2. Dependencias
 
@@ -36,6 +37,10 @@ flowchart TD
     S4 --> S7
     S5 --> S7
     S6 --> S7
+    S1 --> S8[008 Gestión platos y raciones]
+    S2 --> S8
+    S6 --> S8
+    S7 --> S8
 ```
 
 - `001` es la base compartida.
@@ -44,6 +49,7 @@ flowchart TD
 - `005` es transversal a `003` y `004`.
 - `006` consume pedidos, raciones y turnos.
 - `007` cierra el despliegue.
+- `008` reorganiza la experiencia del encargado sobre menú, raciones y turnos, y alinea el catálogo semilla con el menú real.
 
 ## 3. Trazabilidad al PDF
 
@@ -53,11 +59,11 @@ flowchart TD
 | p. 4 | Situación actual y problemas | 001, 003, 004, 006 |
 | p. 5 | Solución propuesta | 001, 002, 003, 004, 005 |
 | p. 6 | Actores y responsabilidades | 001, 002, 003, 004, 006 |
-| p. 7 | **P-01** Configurar menú, raciones y variaciones | 002 |
+| p. 7 | **P-01** Configurar menú, raciones y variaciones | 002, 008 |
 | p. 8 | **P-02** Tomar y enviar el pedido | 003 |
 | p. 9 | **P-03** Recibir y preparar | 004 |
 | p. 9 | **P-04** Avisar, recoger y entregar | 003, 004, 005 |
-| p. 10 | **P-05** Controlar raciones y agotados | 002, 006 |
+| p. 10 | **P-05** Controlar raciones y agotados | 002, 006, 008 |
 | p. 10 | **P-06** Cerrar el turno | 006 |
 | p. 11 | **RN-01 a RN-12** Reglas de negocio | 002, 003, 004, 006 |
 | pp. 12-13 | Estados del pedido y del plato | 001, 002, 003, 004 |
@@ -75,6 +81,8 @@ flowchart TD
 | Contrato de eventos Socket.IO | `005-avisos-tiempo-real/contracts/events.md` |
 | Stack y arquitectura | `001-plataforma-base/plan.md` |
 | Despliegue web | `007-despliegue-web-responsive/plan.md` |
+| Diseño UI, paleta y responsive | [`docs/design-system.md`](../docs/design-system.md) |
+| Navegación y catálogo del encargado | `008-gestion-platos-raciones/spec.md` |
 
 ## 5. Decisiones de negocio confirmadas
 
@@ -103,6 +111,9 @@ flowchart TD
 | Q-006-01 | ¿El resumen de cierre incluye montos además de cantidades? | 006 | Medio |
 | Q-006-02 | ¿El registro por falla afecta raciones o solo el resumen? | 006 | Medio |
 | Q-007-01 | ¿Dónde se desplegará la demo? | 007 | Alto |
+| Q-008-01 | ¿Cuál es la lista oficial de precios del menú real? | 008 | Alto |
+| Q-008-02 | ¿Qué platos rotativos se sirven cada día de la semana? | 008 | Medio |
+| Q-008-03 | ¿Se permite reponer por encima del total preparado? | 008 | Medio |
 
 El detalle completo está en la sección 13 de cada spec.
 
@@ -115,4 +126,4 @@ El detalle completo está en la sección 13 de cada spec.
 | `aprobada` | Aprobada para planificación/implementación. |
 | `implementada` | Implementada y verificada. |
 
-Todas las specs están en `borrador` a la fecha de creación.
+Las specs 001–007 están en `borrador`; la 008 está implementada en la demo.
