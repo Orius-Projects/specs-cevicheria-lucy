@@ -394,3 +394,98 @@ Patrón canónico: `client/src/components/menu/DishRationCard.tsx`, `DishEditShe
   - Rutas antiguas: `/encargado/menu` y `/encargado/raciones` terminan en `/encargado`; `/encargado/turnos` muestra el control de turnos.
 - `/mozo/menu` con las 4 secciones activas (Criollo, Entrada, Marino, Bebidas), sin `A_LA_CARTA` y sin overflow horizontal; el filtro Criollo muestra 11 platos.
 - Flujo de borrador verificado en navegador: CTA sin menú → crear borrador → catálogo de 26 platos activos → agregar plato → editar precio a S/ 23.50 y límite 10/10 → guardar → quitar del menú. Los datos de prueba se limpiaron después.
+
+---
+
+## 13. Pautas para Pantalla de Cocina / KDS (Alto Contraste y Lectura a Distancia)
+
+1. **Entorno Operativo:** La pantalla KDS (tablet o monitor industrial) opera a 1.5–2 metros de distancia del cocinero bajo vapor, iluminación intensa y manos húmedas/ocupadas.
+2. **Jerarquía Visual Inmediata:**
+   - Número de mesa en tamaño gigante: `text-3xl` o `text-4xl font-black` con fondo contrastado.
+   - Tiempo transcurrido visible desde lejos (`text-xs font-mono font-bold text-slate-500`).
+   - Nombre de plato sin abreviar en `text-base sm:text-lg font-bold text-slate-900`.
+   - Cantidad de raciones pedidas en pill de alto impacto (`w-7 h-7 rounded-full bg-slate-900 text-white font-black`).
+3. **Notas y Variaciones Especiales:**
+   - Las notas del comensal o mozo ("sin sal", "término medio") deben mostrarse en bloque destacado `bg-amber-50 border border-amber-200 text-amber-900 font-semibold p-2 rounded-lg`.
+   - Prohibido esconder notas detrás de un botón o modal; deben ser legibles de un solo vistazo.
+4. **Acción Única de Cocina:**
+   - Botón **“Marcar Listo”** a ancho completo (`w-full`), altura mínima de 48 px (`min-h-[48px]`), fondo `bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-base shadow-sm`.
+5. **KDS Dark Mode / Modo Alto Contraste (Opcional):**
+   - Superficie `bg-slate-950`, tarjetas `bg-slate-900 border-slate-800`, texto primario blanco `text-white` y números de mesa en amarillo ámbar `text-amber-400`.
+
+---
+
+## 14. Pautas para Estados Vacíos (Empty States) y Pantallas de Carga (Skeletons)
+
+1. **Estados Vacíos (Empty States):**
+   - Jamás dejar una pantalla o sección en blanco sin feedback explicativo.
+   - Anatomía obligatoria:
+     - Icono vectorial temático de 48 × 48 px (`w-12 h-12 text-slate-400`).
+     - Título claro y conciso en `text-base sm:text-lg font-semibold text-slate-800`.
+     - Descripción contextual en `text-sm text-slate-500 max-w-sm mx-auto`.
+     - Botón de acción opcional si el usuario puede resolver el estado (ej. "+ Nuevo Pedido", "Explorar Menú").
+   - Ejemplos canónicos:
+     - **Cocina vacía:** "¡Todo al día! No hay pedidos pendientes en preparación".
+     - **Mesa sin pedidos:** "Mesa libre. Presiona 'Nuevo Pedido' para registrar comensales".
+     - **Filtro de menú sin resultados:** "No se encontraron platos en esta categoría".
+2. **Pantallas de Carga Progresiva (Skeletons):**
+   - Reemplazar spinners genéricos en pantallas principales por esqueletos con `animate-pulse`.
+   - `DishCardSkeleton`: caja de tarjeta con contenedor de imagen o pill, líneas de título de 16 px y 12 px, y botón inferior simulado en `bg-slate-200 rounded-xl`.
+   - Previene el salto visual brusco (CLS - Cumulative Layout Shift) al cargar datos de red.
+
+---
+
+## 15. Pautas para Indicador de Conexión en Vivo y Resiliencia de Red
+
+1. **Visibilidad de Conexión:**
+   - Si la conexión WebSocket (Socket.IO) cae, el usuario debe saberlo de inmediato para no asumir que la cocina o salón están inactivos.
+2. **Estados y Semántica de la Barra:**
+   - `connected`: Oculto por defecto para no contaminar la interfaz, o punto verde discreto en el header.
+   - `reconnecting`: Banner superior en `bg-amber-50 border-amber-200 text-amber-900` con texto *"Reconectando con el servidor..."* y animación de pulso.
+   - `disconnected`: Banner superior persistente en `bg-rose-50 border-rose-200 text-rose-900` con texto *"Sin conexión con el servidor"* y botón táctil de *"Reintentar conexión"* de 44 px.
+3. **Resiliencia Automática:**
+   - La barra debe disparar una resincronización de pedidos/raciones vía REST tan pronto como el canal Socket.IO vuelva a estado `connected`.
+
+---
+
+## 16. Pautas para Sistema de Feedback Háptico y Sonoro (Audio / Vibración)
+
+1. **Feedback Háptico (`navigator.vibrate`):**
+   - En dispositivos móviles Android soportados, acompañar las alertas visuales con vibración táctil para avisar al mozo en salón aunque lleve el teléfono en el bolsillo o haya ruido ambiental.
+   - **Plato Listo para recoger:** Patrón de doble pulso: `[100, 50, 100]` ms.
+   - **Confirmación de Pedido Enviado:** Pulso corto de confirmación: `[60]` ms.
+   - **Error / Acción bloqueada:** Pulso largo de advertencia: `[200]` ms.
+   - Implementar con fallback seguro: si el navegador o sistema operativo no soporta la API, la aplicación continúa de forma transparente sin lanzar excepciones.
+2. **Feedback Sonoro (Web Audio API):**
+   - Frecuencia armónica de campana de dos tonos: Re5 (587.33 Hz) a La5 (880 Hz) con decaimiento exponencial a 0.35 s.
+   - Control de activación: botón de mute/unmute accesible y persistencia en `localStorage` (`cevicheria_sound_enabled`).
+
+---
+
+## 17. Pautas Visuales para Mapa de Salón y Mesas (`Floor Plan`)
+
+1. **Zonificación Clara:**
+   - División en zonas operativas (ej. Primer Piso, Segundo Piso, Terraza) accesibles mediante tabs táctiles con iconos alusivos.
+2. **Estados Visuales de Mesa:**
+   - `LIBRE`: Superficie blanca `bg-white`, borde sutil `border-slate-200`, texto de mesa neutro.
+   - `OCUPADA`: Borde celeste de marca `border-brand-500` con badge `bg-brand-50 text-brand-700` indicando pedidos en curso y tiempo de servicio.
+   - `CON PEDIDO LISTO`: Indicador visual pulsante verde `bg-emerald-500 animate-ping` o badge `emerald-100 text-emerald-800` que alerta al mozo para acercarse a servir.
+   - `POR CERRAR`: Acento ámbar `border-amber-400` para mesas que están finalizando consumo.
+3. **Ergonomía:**
+   - Tarjetas de mesa en cuadrícula responsiva (`grid-cols-2 sm:grid-cols-3 md:grid-cols-4`) con altura mínima de 80 px para pulsación rápida sin equivocaciones.
+
+---
+
+## 18. Catálogo de Iconografía y Tamaños Estandarizados
+
+1. **Librería y Formato Canónico:**
+   - SVG vectoriales nítidos con trazo `stroke-width="2"`, `stroke-linecap="round"` y `stroke-linejoin="round"`.
+   - Se recomienda el conjunto semántico de **Lucide Icons** para consistencia visual.
+2. **Cuadrícula de Tamaños Estandarizados:**
+   - **Micro (14 × 14 px / `w-3.5 h-3.5`):** Metadatos, etiquetas en badges compactos y sufijos.
+   - **Estándar (18–20 px / `w-4.5 h-4.5` a `w-5 h-5`):** Controles interactivos dentro de botones, inputs y filas de lista.
+   - **Navegación / Hero (24 × 24 px / `w-6 h-6`):** Barra de navegación, headers principales y botones circulares de acción.
+   - **Alertas y Empty States (48 × 48 px / `w-12 h-12` a `w-16 h-16`):** Modales de confirmación, pantallas sin datos e ilustraciones vectoriales.
+3. **Accesibilidad en Iconos:**
+   - Iconos interactivos sin texto visible deben incluir obligatoriamente `aria-label` descriptivo.
+   - Iconos meramente decorativos acompañados de texto deben incluir `aria-hidden="true"`.
