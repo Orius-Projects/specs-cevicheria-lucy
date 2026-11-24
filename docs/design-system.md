@@ -489,3 +489,54 @@ Patrón canónico: `client/src/components/menu/DishRationCard.tsx`, `DishEditShe
 3. **Accesibilidad en Iconos:**
    - Iconos interactivos sin texto visible deben incluir obligatoriamente `aria-label` descriptivo.
    - Iconos meramente decorativos acompañados de texto deben incluir `aria-hidden="true"`.
+
+---
+
+## 19. Paleta Marina Dual y Modo Oscuro ("Mar Profundo")
+
+Para evitar la fatiga visual de los operarios en turnos prolongados y adaptarse tanto a ambientes muy iluminados como a áreas de cocina con poca luz, el sistema cuenta con dos temas visuales conmutables: **Brisa Marina** (modo claro) y **Mar Profundo** (modo oscuro).
+
+### 19.1 Tokens de la Escala `marine` (Modo Oscuro)
+
+| Token | Hex | Rol principal |
+|---|---|---|
+| `marine-700` | `#132a48` | Bordes activos y acentos oscuros |
+| `marine-800` | `#0b192c` | Bordes de tarjetas y superficies terciarias |
+| `marine-850` | `#081524` | Contenedores anidados y hover de botones |
+| `marine-900` | `#06101e` | Superficie principal de tarjetas y barras de navegación |
+| `marine-950` | `#030811` | Fondo general de la aplicación (`body`) |
+
+### 19.2 Reglas de Contraste en Modo Oscuro (WCAG AA)
+
+1. **Prohibido texto oscuro en fondo oscuro:** Encabezados y títulos usan `dark:text-slate-100` o `dark:text-white`. Textos secundarios usan `dark:text-slate-300`.
+2. **Formularios e Inputs:** Los campos de texto en login y administración declaran explícitamente `text-slate-900 dark:text-white bg-white dark:bg-marine-950 border-slate-300 dark:border-marine-700` para garantizar legibilidad independientemente de la preferencia del sistema operativo.
+3. **Badges de estado:**
+   - `ENVIADO`: `bg-brand-100 dark:bg-brand-950/80 text-brand-800 dark:text-brand-200 border-brand-200 dark:border-brand-700`.
+   - `LISTO`: `bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-200 border-emerald-200 dark:border-emerald-700`.
+   - `NOTAS / ALERTA`: `bg-amber-50 dark:bg-amber-950/50 text-amber-900 dark:text-amber-200 border-amber-200 dark:border-amber-800/60`.
+
+---
+
+## 20. Patrones Móviles: Carrito Bottom Sheet y Aislamiento por Mesa
+
+### 20.1 Aislamiento Estricto de Pedidos por Mesa
+- Los pedidos en preparación por el mozo no se almacenan en un carrito global.
+- Se vinculan al código de mesa específico mediante `cevicheria_draft_<tableCode>`.
+- Al cambiar de mesa en el salón, el estado se aísla de manera transparente, evitando la contaminación cruzada entre mesas.
+
+### 20.2 Carrito Flotante Inferior (Bottom Sheet)
+- En dispositivos móviles, al agregar platos se despliega una barra flotante inferior accesible.
+- La barra permite visualizar el resumen con un toque o gesto ascendente sin requerir scroll infinito.
+- El envío a cocina bloquea la interfaz de inmediato y redirige al salón para impedir comandas duplicadas.
+
+---
+
+## 21. Carrusel Horizontal de Zonas Táctil
+- Las pestañas de ambientes (`Todo el local`, `Primer Piso`, `Segundo Piso`, `Afuera del local`) admiten desplazamiento horizontal fluido mediante arrastre táctil y de ratón.
+- Se eliminan barras de desplazamiento visuales (`scrollbar-none`) preservando el área táctil mínima de 44 px.
+
+---
+
+## 22. Centro de Ayuda y Menú de Perfil de Usuario Estandarizado
+- **Modal de Ayuda (`HelpModal`):** Disponible mediante icono `?` en los encabezados, adaptando el contenido al rol del usuario actual (`MOZO`, `COCINERO`, `ENCARGADO`).
+- **Menú de Perfil (`UserMenuDropdown`):** Avatar circular con inicial del usuario, desglose de datos del operador, conmutador interactivo de tema y botón de cierre de sesión seguro.

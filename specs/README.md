@@ -14,6 +14,7 @@ Este directorio agrupa las specs por feature, siguiendo SDD. La fuente es `docs/
 | 006 | [Cierre de turno](006-cierre-turno/spec.md) | P-06 | P1 | ✅ | ✅ | ✅ | ✅ | `research.md`, `quickstart.md` |
 | 007 | [Despliegue web responsive](007-despliegue-web-responsive/spec.md) | Web | P1 | ✅ | ✅ | ✅ | ✅ | `research.md`, `quickstart.md` |
 | 008 | [Gestión de platos y raciones](008-gestion-platos-raciones/spec.md) | P-01, P-05 | P1 | ✅ | — | — | — | Catálogo semilla, nueva IA del encargado |
+| 009 | [Salón, Mesas y Tema Marino](009-ux-mesas-temas/spec.md) | P-02, P-03, UX | P1 | ✅ | — | — | — | Aislamiento de mesas, bottom sheet, gestión de mesas, paleta marina dual |
 
 ## 2. Dependencias
 
@@ -41,6 +42,10 @@ flowchart TD
     S2 --> S8
     S6 --> S8
     S7 --> S8
+    S3 --> S9[009 Salón, Mesas y Tema Marino]
+    S4 --> S9
+    S7 --> S9
+    S8 --> S9
 ```
 
 - `001` es la base compartida.
@@ -50,6 +55,7 @@ flowchart TD
 - `006` consume pedidos, raciones y turnos.
 - `007` cierra el despliegue.
 - `008` reorganiza la experiencia del encargado sobre menú, raciones y turnos, y alinea el catálogo semilla con el menú real.
+- `009` optimiza la ergonomía en salón (aislamiento de mesas, bottom sheet), KDS en cocina y tema marino dual de alto contraste.
 
 ## 3. Trazabilidad al PDF
 
